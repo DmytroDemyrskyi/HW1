@@ -28,7 +28,13 @@ if __name__ == '__main__':
 
 
 def parse_cookie(query: str) -> dict:
-    return {}
+    cookie_dict = {}
+    if query:
+        pairs = query.split(';')
+        for pair in pairs:
+            key, value = pair.strip().split('=')
+            cookie_dict[key] = value
+    return cookie_dict
 
 
 if __name__ == '__main__':
@@ -37,3 +43,17 @@ if __name__ == '__main__':
     assert parse_cookie('name=Dima;age=28;') == {'name': 'Dima', 'age': '28'}
     assert parse_cookie('name=Dima=User;age=28;') == {
         'name': 'Dima=User', 'age': '28'}
+    assert parse_cookie('key1=value1;key2=value2;key3=value3;') == {
+        'key1': 'value1', 'key2': 'value2', 'key3': 'value3'}
+    assert parse_cookie('username=John;email=john@example.com;') == {
+        'username': 'John', 'email': 'john@example.com'}
+    assert parse_cookie('color=red;size=large;') == {
+        'color': 'red', 'size': 'large'}
+    assert parse_cookie(
+        'city=New+York;country=USA;') == {'city': 'New+York', 'country': 'USA'}
+    assert parse_cookie('name=Alice;occupation=teacher;') == {
+        'name': 'Alice', 'occupation': 'teacher'}
+    assert parse_cookie('id=12345;status=active;') == {
+        'id': '12345', 'status': 'active'}
+
+    print("All parse_cookie tests passed!")
